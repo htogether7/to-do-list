@@ -1,3 +1,16 @@
 .hidden {
   display: none;
 }
+
+#mode img {
+  width: 10px;
+  height: 10px;
+}
+
+.dark {
+  background-color: black;
+}
+
+.light {
+  color: white;
+}
