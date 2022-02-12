@@ -31,6 +31,7 @@ function changeMode(event) {
 }
 
 function handleReload() {
+    //
     if (localStorage.getItem("mode") === "dark" && !(background.classList.length) || localStorage.getItem("mode") === "light" && background.classList[0] === "dark") {
         toggleSet();
         saveMode();
