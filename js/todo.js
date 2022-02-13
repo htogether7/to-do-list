@@ -1,8 +1,16 @@
 const toDoForm = document.querySelector("#todo-form");
 const toDoInput = toDoForm.querySelector("input");
 const toDoList = document.querySelector("#todo-list");
+const time = document.createElement("div");
+const timeForm = document.createElement("form");
+const timeButton = document.createElement("button");
+const timeInput = document.createElement("input");
+const timeSubmit = document.createElement("input");
 
 let toDos = [];
+
+time.setAttribute("id", "time-div");
+
 
 function saveToDos() {
     localStorage.setItem("todos", JSON.stringify(toDos));
@@ -15,12 +23,36 @@ function deleteToDo(event) {
     saveToDos();
 }
 
-function setTime(event ) {
-    console.log("시간");
-    
+function saveTime(event) {
+    // const hideTimeInput = document.querySelector("time-div");
+    const toDoObj = localStorage.getItem("todos");
+    const toDoJSON = JSON.parse(toDoObj);
+    toDoJSON[0].time = event.target[1].value;
+    console.log(toDoJSON);
+    localStorage.setItem("todos", JSON.stringify(toDoJSON));
+    console.dir(hideTimeInput);
 }
 
+function handleTimeSubmit(event) {
+    event.preventDefault();
+    // console.log(`목표 완료 시간 : ${event.target[1].value}`);
+    saveTime(event);
+}
 
+function makeTime(list) {
+    timeButton.innerText = "시간";
+    timeButton.setAttribute('class', 'timeButton');
+    time.appendChild(timeForm);
+    timeForm.appendChild(timeButton);
+    timeForm.appendChild(timeInput);
+    timeForm.appendChild(timeSubmit);
+    list.appendChild(time);
+    timeInput.setAttribute("type", "time");
+    timeSubmit.setAttribute("type", "submit");
+    timeInput.setAttribute("required", "");
+
+    timeForm.addEventListener("submit", handleTimeSubmit);
+}
 
 function paintToDo(newTodo) {
     const li = document.createElement("li");
@@ -30,22 +62,29 @@ function paintToDo(newTodo) {
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "❌";
     deleteButton.addEventListener("click", deleteToDo);
-    const time = document.createElement("div");
-    const timeButton = document.createElement("button");
-    timeButton.innerText = "시간";
+
     // 시간 버튼 누르면, 시간 뜨게 만들기
-    timeButton.addEventListener("click", setTime);
-    newTodo.time = "00:00";
-    const selectTime = document.createElement("input");
-    selectTime.setAttribute('type', 'time');
+    // const timeForm = document.createElement("form");
+    // const selectTime = timeForm.createElement("input");
+    // selectTime.setAttribute('type', 'time');
+
+    
 
     li.appendChild(span);
     li.appendChild(deleteButton);
-    li.appendChild(time);
-    time.appendChild(timeButton);
-    time.appendChild(selectTime);
+    makeTime(li);
+    // li.appendChild(time);
+    // time.appendChild(timeButton);
+    // time.appendChild(timeForm);
+    // timeForm.appendChild(selectTime);
     toDoList.appendChild(li);
+
 }
+
+// function handleTimeSubmit(event) {
+//     event.preventDefault();
+//     console.log()
+// }
 
 function handleToDoSubmit(event) {
     event.preventDefault();
@@ -64,6 +103,7 @@ function handleToDoSubmit(event) {
 
 toDoForm.addEventListener("submit", handleToDoSubmit);
 
+// selectTime.addEventListener("submit", handleTimeSubmit);
 
 
 const savedToDos = localStorage.getItem("todos");
