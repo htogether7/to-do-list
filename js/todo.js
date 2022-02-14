@@ -66,7 +66,7 @@ function saveTime(event) {
     console.log(timeId);
     for (let key in parsedToDosTime) {
         if (parsedToDosTime[key].id === +timeId.id) {
-            parsedToDosTime[key].time = event.target[1].value;
+            parsedToDosTime[key].time = event.target[0].value;
             console.log(parsedToDosTime[key]);
         }
     }
@@ -84,15 +84,13 @@ function handleTimeSubmit(event) {
 function makeTime(list) {
     const time = document.createElement("div");
     time.setAttribute("id", "time-div");
+    time.setAttribute("class", "hidden");
     const timeForm = document.createElement("form");
-    const timeButton = document.createElement("button");
     const timeInput = document.createElement("input");
     const timeSubmit = document.createElement("input");
 
-    timeButton.innerText = "시간";
-    timeButton.setAttribute('class', 'timeButton');
+
     time.appendChild(timeForm);
-    timeForm.appendChild(timeButton);
     timeForm.appendChild(timeInput);
     timeForm.appendChild(timeSubmit);
     list.appendChild(time);
@@ -103,6 +101,18 @@ function makeTime(list) {
     timeForm.addEventListener("submit", handleTimeSubmit);
 }
 
+function showTimeForm(event) {
+    const allLi = document.querySelectorAll("#todo-list li");
+    for (let x of allLi) {
+        if (x.id === event.path[1].id) {
+            console.log(x.children[3].classList.remove('hidden'));
+        }
+    }
+    // if () {
+
+    // }
+}
+
 function paintToDo(newTodo) {
     const li = document.createElement("li");
     li.id = newTodo.id;
@@ -111,6 +121,10 @@ function paintToDo(newTodo) {
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "❌";
     deleteButton.addEventListener("click", deleteToDo);
+    const timeButton = document.createElement("button");
+    timeButton.classList.add("time-button");
+    timeButton.innerText = "시간";
+
 
     // 시간 버튼 누르면, 시간 뜨게 만들기
     // const timeForm = document.createElement("form");
@@ -121,19 +135,24 @@ function paintToDo(newTodo) {
 
     li.appendChild(span);
     li.appendChild(deleteButton);
+    li.appendChild(timeButton);
     makeTime(li);
     // li.appendChild(time);
     // time.appendChild(timeButton);
     // time.appendChild(timeForm);
     // timeForm.appendChild(selectTime);
     toDoList.appendChild(li);
-
+    const showTime = li.querySelector(".time-button");
+    // console.dir(showTime[0].parentElement.id);
+    showTime.addEventListener("click", showTimeForm);
 }
 
 // function handleTimeSubmit(event) {
 //     event.preventDefault();
 //     console.log()
 // }
+
+
 
 function handleToDoSubmit(event) {
     event.preventDefault();
@@ -147,6 +166,7 @@ function handleToDoSubmit(event) {
     toDos.push(newTodoObj);
     paintToDo(newTodoObj);
     saveToDos();
+
 }
 
 
