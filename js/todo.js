@@ -1,15 +1,11 @@
 const toDoForm = document.querySelector("#todo-form");
 const toDoInput = toDoForm.querySelector("input");
 const toDoList = document.querySelector("#todo-list");
-const time = document.createElement("div");
-const timeForm = document.createElement("form");
-const timeButton = document.createElement("button");
-const timeInput = document.createElement("input");
-const timeSubmit = document.createElement("input");
+
 
 let toDos = [];
 
-time.setAttribute("id", "time-div");
+
 
 
 function saveToDos() {
@@ -23,14 +19,52 @@ function deleteToDo(event) {
     saveToDos();
 }
 
+function hideTimeForm() {
+    const timeDiv = document.querySelectorAll("#time-div");
+    // timeDiv.setAttribute("class", "hidden");
+    for (let key in parsedToDos) {
+        console.log(parsedToDos[key]);
+    }
+    // for (let i = 0; i < parsedToDos.length; i++) {
+    //     if (parsedToDos[i].time !== "") {
+    //         for (let y of timeDiv) {
+    //             if (parsedToDos[i].id === +y.parentElement.id) {
+    //                 console.log("true");
+    //                 y.classList.add("hidden");
+    //             }
+    //             // console.log(y);
+    //         }
+    //     }
+    // } 
+
+    
+
+    // for (let x of timeDiv) {
+    //     if (x.time !== "") {
+    //         console.log(x);
+    //         // x.setAttribute("class", "hidden");
+    //     }
+    // }
+}
+
+
+
 function saveTime(event) {
     // const hideTimeInput = document.querySelector("time-div");
     const toDoObj = localStorage.getItem("todos");
     const toDoJSON = JSON.parse(toDoObj);
-    toDoJSON[0].time = event.target[1].value;
-    console.log(toDoJSON);
+    const timeId = event.target.parentElement.parentElement;  
+
+    for (let x of toDoJSON) {
+        if (x.id === +timeId.id) {
+            x.time = event.target[1].value;
+        }
+    }
+    // console.log(event.target[1].value);
+    // toDoJSON[0].time = event.target[1].value; // id가 같은 time에 value 넣어야함
     localStorage.setItem("todos", JSON.stringify(toDoJSON));
-    console.dir(hideTimeInput);
+    // console.dir(hideTimeInput);
+    hideTimeForm();
 }
 
 function handleTimeSubmit(event) {
@@ -40,6 +74,13 @@ function handleTimeSubmit(event) {
 }
 
 function makeTime(list) {
+    const time = document.createElement("div");
+    time.setAttribute("id", "time-div");
+    const timeForm = document.createElement("form");
+    const timeButton = document.createElement("button");
+    const timeInput = document.createElement("input");
+    const timeSubmit = document.createElement("input");
+
     timeButton.innerText = "시간";
     timeButton.setAttribute('class', 'timeButton');
     time.appendChild(timeForm);
@@ -107,9 +148,12 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 
 const savedToDos = localStorage.getItem("todos");
+const parsedToDos = JSON.parse(savedToDos);
 
 if (savedToDos) {
-    const parsedToDos = JSON.parse(savedToDos);
     toDos = parsedToDos;
     parsedToDos.forEach(paintToDo);
+    hideTimeForm();
 }
+
+
