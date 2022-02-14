@@ -22,9 +22,17 @@ function deleteToDo(event) {
 function hideTimeForm() {
     const timeDiv = document.querySelectorAll("#time-div");
     // timeDiv.setAttribute("class", "hidden");
-    for (let key in parsedToDos) {
-        console.log(parsedToDos[key]);
+    const parsedToDosTime = JSON.parse(localStorage.getItem("todos"));
+    for (let key in parsedToDosTime) {
+        if (parsedToDosTime[key].time !== "") {
+            for (let x of timeDiv) {
+                if (+x.parentElement.id === parsedToDosTime[key].id) {
+                    x.classList.add("hidden");
+                }
+            }
+        }
     }
+
     // for (let i = 0; i < parsedToDos.length; i++) {
     //     if (parsedToDos[i].time !== "") {
     //         for (let y of timeDiv) {
@@ -51,19 +59,19 @@ function hideTimeForm() {
 
 function saveTime(event) {
     // const hideTimeInput = document.querySelector("time-div");
-    const toDoObj = localStorage.getItem("todos");
-    const toDoJSON = JSON.parse(toDoObj);
+    
+    const parsedToDosTime = JSON.parse(localStorage.getItem("todos"));
+    console.log(parsedToDosTime);
     const timeId = event.target.parentElement.parentElement;  
-
-    for (let x of toDoJSON) {
-        if (x.id === +timeId.id) {
-            x.time = event.target[1].value;
+    console.log(timeId);
+    for (let key in parsedToDosTime) {
+        if (parsedToDosTime[key].id === +timeId.id) {
+            parsedToDosTime[key].time = event.target[1].value;
+            console.log(parsedToDosTime[key]);
         }
     }
-    // console.log(event.target[1].value);
-    // toDoJSON[0].time = event.target[1].value; // id가 같은 time에 value 넣어야함
-    localStorage.setItem("todos", JSON.stringify(toDoJSON));
-    // console.dir(hideTimeInput);
+    toDos = parsedToDosTime;
+    localStorage.setItem("todos", JSON.stringify(parsedToDosTime));
     hideTimeForm();
 }
 
@@ -155,5 +163,3 @@ if (savedToDos) {
     parsedToDos.forEach(paintToDo);
     hideTimeForm();
 }
-
-
