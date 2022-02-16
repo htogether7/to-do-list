@@ -19,20 +19,40 @@ function deleteToDo(event) {
     saveToDos();
 }
 
+function changeTimeButton(div, parsedToDosTime) {
+    // const timeButton = document.querySelector("`#${id}`");
+    // // // timeButton.innerText = "시간 바꾸기";
+    
+    const changedTimeForm = div.parentElement;
+    const changedTimeFormID = changedTimeForm.id;
+    // console.log(changedTimeForm.id);
+    let changeTimeText = 0;
+    for (let x of parsedToDosTime) {
+        if (x.id === +changedTimeFormID) {
+            changeTimeText = x.time;
+        }
+    }
+    changedTimeForm.children[2].innerHTML = `목표 시간 : ${changeTimeText} 까지`;
+
+}
+
 function hideTimeForm() {
     const timeDiv = document.querySelectorAll("#time-div");
     // timeDiv.setAttribute("class", "hidden");
     const parsedToDosTime = JSON.parse(localStorage.getItem("todos"));
+    console.log(parsedToDosTime);
     for (let key in parsedToDosTime) {
         if (parsedToDosTime[key].time !== "") {
             for (let x of timeDiv) {
+                console.log(x);
                 if (+x.parentElement.id === parsedToDosTime[key].id) {
                     x.classList.add("hidden");
+                    changeTimeButton(x, parsedToDosTime);
                 }
             }
         }
     }
-
+    
     // for (let i = 0; i < parsedToDos.length; i++) {
     //     if (parsedToDos[i].time !== "") {
     //         for (let y of timeDiv) {
