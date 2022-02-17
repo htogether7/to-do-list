@@ -5,7 +5,30 @@ const toDoList = document.querySelector("#todo-list");
 
 let toDos = [];
 
+function showSuccessOrNot(choosedToDo) {
+    const successDiv = document.createElement("div");
+    const SuccessButton = document.createElement("button");
+    const FailButton = document.createElement("button");
+    successDiv.appendChild(SuccessButton);
+    successDiv.appendChild(FailButton);
+}
 
+function showAlarm() {
+    const parsedToDosAlarm = JSON.parse(localStorage.getItem("todos"));
+    for (let x of parsedToDosAlarm) {
+        const clockNow = clock.innerHTML.split(':');
+        const clockGoal = x.time.split(":");
+        const diffMin = (+clockGoal[0]) * 60 + (+clockGoal[1]) - ((+clockNow[0]) * 60 + (+clockNow[1]));
+        if (diffMin <= 10) {
+            console.log(x);
+            console.log(`, 10분 남았습니다.`);
+        }
+
+        if (diffMin <= 0) {
+            showSuccessOrNot(x);  
+        }
+    }
+}
 
 
 function saveToDos() {
@@ -40,11 +63,11 @@ function hideTimeForm() {
     const timeDiv = document.querySelectorAll("#time-div");
     // timeDiv.setAttribute("class", "hidden");
     const parsedToDosTime = JSON.parse(localStorage.getItem("todos"));
-    console.log(parsedToDosTime);
+    // console.log(parsedToDosTime);
     for (let key in parsedToDosTime) {
         if (parsedToDosTime[key].time !== "") {
             for (let x of timeDiv) {
-                console.log(x);
+                // console.log(x);
                 if (+x.parentElement.id === parsedToDosTime[key].id) {
                     x.classList.add("hidden");
                     changeTimeButton(x, parsedToDosTime);
@@ -133,6 +156,7 @@ function showTimeForm(event) {
     // }
 }
 
+
 function paintToDo(newTodo) {
     const li = document.createElement("li");
     li.id = newTodo.id;
@@ -141,6 +165,7 @@ function paintToDo(newTodo) {
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "❌";
     deleteButton.addEventListener("click", deleteToDo);
+    const timeButtonSpan = document.createElement("span");
     const timeButton = document.createElement("button");
     timeButton.classList.add("time-button");
     timeButton.innerText = "시간";
@@ -155,6 +180,7 @@ function paintToDo(newTodo) {
 
     li.appendChild(span);
     li.appendChild(deleteButton);
+    // timeButtonSpan.appendChild(timeButton);
     li.appendChild(timeButton);
     makeTime(li);
     // li.appendChild(time);
@@ -202,4 +228,6 @@ if (savedToDos) {
     toDos = parsedToDos;
     parsedToDos.forEach(paintToDo);
     hideTimeForm();
+    // showAlarm();
 }
+setInterval(showAlarm,1000);
