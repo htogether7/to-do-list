@@ -6,11 +6,12 @@ const toDoList = document.querySelector("#todo-list");
 let toDos = [];
 
 function showSuccessOrNot(choosedToDo) {
-    const successDiv = document.createElement("div");
-    const SuccessButton = document.createElement("button");
-    const FailButton = document.createElement("button");
-    successDiv.appendChild(SuccessButton);
-    successDiv.appendChild(FailButton);
+    const toDoListAlarm = document.querySelector("#todo-list");
+    for (let x of toDoListAlarm.children) {
+        if (+x.id === choosedToDo.id) {
+            x.children[4].classList.remove("hidden");
+        }
+    }
 }
 
 function showAlarm() {
@@ -20,8 +21,8 @@ function showAlarm() {
         const clockGoal = x.time.split(":");
         const diffMin = (+clockGoal[0]) * 60 + (+clockGoal[1]) - ((+clockNow[0]) * 60 + (+clockNow[1]));
         if (diffMin <= 10) {
-            console.log(x);
-            console.log(`, 10분 남았습니다.`);
+            // console.log(x);
+            console.log(`10분 남았습니다.`);
         }
 
         if (diffMin <= 0) {
@@ -124,6 +125,38 @@ function handleTimeSubmit(event) {
     saveTime(event);
 }
 
+function showSuccessandFail() {
+    success.innerHTML = `오늘 달성한 목표 : ${localStorage.getItem("todaySuccess")}`;
+    fail.innerHTML = `오늘 달성한 목표 : ${localStorage.getItem("todayFail")}`;
+}
+
+function handleSuccess(event) {
+    const deleteList = event.target.parentElement.parentElement;
+    toDos = toDos.filter(toDo => toDo.id !== +deleteList.id);
+    deleteList.remove();
+    saveToDos();
+    let successCount = localStorage.getItem("todaySuccess");
+    successCount++;
+    console.log(successCount);
+    localStorage.setItem("todaySuccess", successCount);
+    
+    showSuccessandFail();
+
+}
+
+function handleFail(event){
+    const deleteList = event.target.parentElement.parentElement;
+    toDos = toDos.filter(toDo => toDo.id !== +deleteList.id);
+    deleteList.remove();
+    saveToDos();
+    let failCount = localStorage.getItem("todayFail");
+    failCount++;
+    console.log(failCount);
+    localStorage.setItem("todayFail", failCount);
+
+    showSuccessandFail();
+}
+
 function makeTime(list) {
     const time = document.createElement("div");
     time.setAttribute("id", "time-div");
@@ -132,16 +165,31 @@ function makeTime(list) {
     const timeInput = document.createElement("input");
     const timeSubmit = document.createElement("input");
 
+    const successDiv = document.createElement("div");
+    const successButton = document.createElement("button");
+    successButton.setAttribute("class", "success-button");
+    const failButton = document.createElement("button");
+    failButton.setAttribute("class", "fail-button");
+    successDiv.appendChild(successButton);
+    successDiv.appendChild(failButton);
+    successButton.innerHTML = "✓";
+    failButton.innerHTML = "✕";
+
 
     time.appendChild(timeForm);
     timeForm.appendChild(timeInput);
     timeForm.appendChild(timeSubmit);
     list.appendChild(time);
+    list.appendChild(successDiv);
+    successDiv.setAttribute("class", "hidden");
+    successDiv.classList.add("success-div");
     timeInput.setAttribute("type", "time");
     timeSubmit.setAttribute("type", "submit");
     timeInput.setAttribute("required", "");
 
     timeForm.addEventListener("submit", handleTimeSubmit);
+    successButton.addEventListener("click", handleSuccess);
+    failButton.addEventListener("click", handleFail);
 }
 
 function showTimeForm(event) {
@@ -224,10 +272,13 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 const savedToDos = localStorage.getItem("todos");
 const parsedToDos = JSON.parse(savedToDos);
 
+
 if (savedToDos) {
     toDos = parsedToDos;
     parsedToDos.forEach(paintToDo);
     hideTimeForm();
-    // showAlarm();
+    showAlarm();
+    showSuccessandFail();
+
 }
 setInterval(showAlarm,1000);
