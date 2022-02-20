@@ -16,17 +16,32 @@ function showSuccessOrNot(choosedToDo) {
 
 function showAlarm() {
     const parsedToDosAlarm = JSON.parse(localStorage.getItem("todos"));
-    for (let x of parsedToDosAlarm) {
+    for (let key in parsedToDosAlarm) {
         const clockNow = clock.innerHTML.split(':');
-        const clockGoal = x.time.split(":");
+        const clockGoal = parsedToDosAlarm[key].time.split(":");
         const diffMin = (+clockGoal[0]) * 60 + (+clockGoal[1]) - ((+clockNow[0]) * 60 + (+clockNow[1]));
-        if (diffMin <= 10) {
+        if (diffMin <= 10 && parsedToDosAlarm[key].pageCount === 0) {
             // console.log(x);
-            console.log(`10분 남았습니다.`);
+            console.log(`${parsedToDosAlarm[key].id}, 10분 남았습니다.`);
+            window.open("alarm.html");
+            for (let x of toDos) {
+                if (x.id === parsedToDosAlarm[key].id) {
+                    x.pageCount = 1;
+                }
+            }
+            saveToDos();
         }
+        
 
-        if (diffMin <= 0) {
-            showSuccessOrNot(x);  
+        if (diffMin <= 0 && parsedToDosAlarm[key].pageCount === 1) {
+            window.open("finishalarm.html");
+            for (let x of toDos) {
+                if (x.id === parsedToDosAlarm[key].id) {
+                    x.pageCount = 2;
+                }
+            }
+            saveToDos();
+            showSuccessOrNot(parsedToDosAlarm[key]);  
         }
     }
 }
@@ -256,6 +271,7 @@ function handleToDoSubmit(event) {
         text: newTodo,
         id: Date.now(),
         time: "",
+        pageCount: 0,
     };
     toDos.push(newTodoObj);
     paintToDo(newTodoObj);
