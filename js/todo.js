@@ -1,6 +1,7 @@
 const toDoForm = document.querySelector("#todo-form");
 const toDoInput = toDoForm.querySelector("input");
 const toDoList = document.querySelector("#todo-list");
+ 
 
 
 let toDos = [];
@@ -20,7 +21,7 @@ function showAlarm() {
         const clockNow = clock.innerHTML.split(':');
         const clockGoal = parsedToDosAlarm[key].time.split(":");
         const diffMin = (+clockGoal[0]) * 60 + (+clockGoal[1]) - ((+clockNow[0]) * 60 + (+clockNow[1]));
-        if (diffMin <= 10 && parsedToDosAlarm[key].pageCount === 0) {
+        if (diffMin > 0 && diffMin <= 10 && parsedToDosAlarm[key].pageCount === 0) {
             // console.log(x);
             console.log(`${parsedToDosAlarm[key].id}, 10분 남았습니다.`);
             window.open("alarm.html");
@@ -33,7 +34,7 @@ function showAlarm() {
         }
         
 
-        if (diffMin <= 0 && parsedToDosAlarm[key].pageCount === 1) {
+        if (diffMin > 0 && diffMin <= 0 && parsedToDosAlarm[key].pageCount === 1) {
             window.open("finishalarm.html");
             for (let x of toDos) {
                 if (x.id === parsedToDosAlarm[key].id) {
@@ -272,6 +273,7 @@ function handleToDoSubmit(event) {
         id: Date.now(),
         time: "",
         pageCount: 0,
+        date  : today.getDate(),
     };
     toDos.push(newTodoObj);
     paintToDo(newTodoObj);
@@ -287,7 +289,7 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 const savedToDos = localStorage.getItem("todos");
 const parsedToDos = JSON.parse(savedToDos);
-
+const today = new Date();
 
 if (savedToDos) {
     toDos = parsedToDos;
@@ -298,3 +300,4 @@ if (savedToDos) {
 
 }
 setInterval(showAlarm,1000);
+// setInterval(check)
