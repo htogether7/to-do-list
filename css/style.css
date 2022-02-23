@@ -14,3 +14,15 @@ img {
 .light {
   color: white;
 }
+
+.success {
+  background-color: green;
+}
+
+.mid {
+  background-color: yellow;
+}
+
+.fail {
+  background-color: red;
+}

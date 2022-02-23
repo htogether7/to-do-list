@@ -6,6 +6,31 @@ const toDoList = document.querySelector("#todo-list");
 
 let toDos = [];
 
+function paintBack() {
+    for (let key in parsedToDos) {
+        if (parsedToDos[key].count === "success") {
+            for (let x of toDoList.children) {
+                if (parsedToDos[key].id === +x.id) {
+                    x.classList.add("success");
+                }
+            }
+        } else if (parsedToDos[key].count === "mid") {
+            for (let x of toDoList.children) {
+                if (parsedToDos[key].id === +x.id) {
+                    x.classList.add("mid");
+                }
+            }
+        } else if (parsedToDos[key].count === "fail") {
+            for (let x of toDoList.children) {
+                if (parsedToDos[key].id === +x.id) {
+                    x.classList.add("fail");
+                }
+            }
+        }
+    }
+    console.log(toDoList.children[0]);
+}
+
 function showSuccessOrNot(choosedToDo) {
     const toDoListAlarm = document.querySelector("#todo-list");
     for (let x of toDoListAlarm.children) {
@@ -14,38 +39,48 @@ function showSuccessOrNot(choosedToDo) {
         }
     }
 }
-
-function showAlarm() {
+function checkTime() {
     const parsedToDosAlarm = JSON.parse(localStorage.getItem("todos"));
     for (let key in parsedToDosAlarm) {
         const clockNow = clock.innerHTML.split(':');
         const clockGoal = parsedToDosAlarm[key].time.split(":");
         const diffMin = (+clockGoal[0]) * 60 + (+clockGoal[1]) - ((+clockNow[0]) * 60 + (+clockNow[1]));
-        if (diffMin > 0 && diffMin <= 10 && parsedToDosAlarm[key].pageCount === 0) {
-            // console.log(x);
-            console.log(`${parsedToDosAlarm[key].id}, 10분 남았습니다.`);
-            window.open("alarm.html");
-            for (let x of toDos) {
-                if (x.id === parsedToDosAlarm[key].id) {
-                    x.pageCount = 1;
-                }
-            }
-            saveToDos();
-        }
-        
-
-        if (diffMin > 0 && diffMin <= 0 && parsedToDosAlarm[key].pageCount === 1) {
-            window.open("finishalarm.html");
-            for (let x of toDos) {
-                if (x.id === parsedToDosAlarm[key].id) {
-                    x.pageCount = 2;
-                }
-            }
-            saveToDos();
-            showSuccessOrNot(parsedToDosAlarm[key]);  
+        if (diffMin <= 0 && parsedToDosAlarm[key].count === 0) {
+            showSuccessOrNot(parsedToDosAlarm[key]);
         }
     }
 }
+// function showAlarm() {
+//     const parsedToDosAlarm = JSON.parse(localStorage.getItem("todos"));
+//     for (let key in parsedToDosAlarm) {
+//         const clockNow = clock.innerHTML.split(':');
+//         const clockGoal = parsedToDosAlarm[key].time.split(":");
+//         const diffMin = (+clockGoal[0]) * 60 + (+clockGoal[1]) - ((+clockNow[0]) * 60 + (+clockNow[1]));
+//         if (diffMin > 0 && diffMin <= 10 && parsedToDosAlarm[key].pageCount === 0) {
+//             // console.log(x);
+//             console.log(`${parsedToDosAlarm[key].id}, 10분 남았습니다.`);
+//             window.open("alarm.html");
+//             for (let x of toDos) {
+//                 if (x.id === parsedToDosAlarm[key].id) {
+//                     x.pageCount = 1;
+//                 }
+//             }
+//             saveToDos();
+//         }
+        
+
+//         if (diffMin <= 0 && parsedToDosAlarm[key].pageCount === 1) {
+//             window.open("finishalarm.html");
+//             for (let x of toDos) {
+//                 if (x.id === parsedToDosAlarm[key].id) {
+//                     x.pageCount = 2;
+//                 }
+//             }
+//             saveToDos();
+//             showSuccessOrNot(parsedToDosAlarm[key]);  
+//         }
+//     }
+// }
 
 
 function saveToDos() {
@@ -141,36 +176,64 @@ function handleTimeSubmit(event) {
     saveTime(event);
 }
 
-function showSuccessandFail() {
-    success.innerHTML = `오늘 달성한 목표 : ${localStorage.getItem("todaySuccess")}`;
-    fail.innerHTML = `오늘 달성한 목표 : ${localStorage.getItem("todayFail")}`;
-}
 
 function handleSuccess(event) {
-    const deleteList = event.target.parentElement.parentElement;
-    toDos = toDos.filter(toDo => toDo.id !== +deleteList.id);
-    deleteList.remove();
-    saveToDos();
-    let successCount = localStorage.getItem("todaySuccess");
-    successCount++;
-    console.log(successCount);
-    localStorage.setItem("todaySuccess", successCount);
+    const li = event.target.parentElement.parentElement;
+    const buttonSet = event.target.parentElement;
+    const parsedToDosSuccess = JSON.parse(localStorage.getItem("todos"));
+    let answer = confirm("목표 시간안에 달성하였습니까?");
+    if (answer) {
+        li.classList.add("success");
+        buttonSet.classList.add("hidden");
+        for (let key in parsedToDosSuccess) {
+            if (parsedToDosSuccess[key].id === +li.id) {
+                parsedToDosSuccess[key].count = "success";
+                break;
+            }
+        }
+        localStorage.setItem("todos", JSON.stringify(parsedToDosSuccess));
+        // if (parsedToDos)
+    }
     
-    showSuccessandFail();
-
+    
 }
 
-function handleFail(event){
-    const deleteList = event.target.parentElement.parentElement;
-    toDos = toDos.filter(toDo => toDo.id !== +deleteList.id);
-    deleteList.remove();
-    saveToDos();
-    let failCount = localStorage.getItem("todayFail");
-    failCount++;
-    console.log(failCount);
-    localStorage.setItem("todayFail", failCount);
+function handleMid(event) {
+    const li = event.target.parentElement.parentElement;
+    const buttonSet = event.target.parentElement;
+    const parsedToDosMid = JSON.parse(localStorage.getItem("todos"));
+    let answer = confirm("목표 시간 이후에 달성하였습니까?");
+    if (answer) {
+        li.classList.add("mid");
+        buttonSet.classList.add("hidden");
+        for (let key in parsedToDosMid) {
+            if (parsedToDosMid[key].id === +li.id) {
+                parsedToDosMid[key].count = "mid";
+                break;
+            }
+        }
+        localStorage.setItem("todos", JSON.stringify(parsedToDosMid));
+    }
+    
+}
 
-    showSuccessandFail();
+function handleFail(event) {
+    const li = event.target.parentElement.parentElement;
+    const buttonSet = event.target.parentElement;
+    const parsedToDosFail = JSON.parse(localStorage.getItem("todos"));
+    let answer = confirm("하지 않았습니까?");
+    if (answer) {
+        li.classList.add("fail");
+        buttonSet.classList.add("hidden");
+        for (let key in parsedToDosFail) {
+            if (parsedToDosFail[key].id === +li.id) {
+                parsedToDosFail[key].count = "fail";
+                break;
+            }
+        }
+        localStorage.setItem("todos", JSON.stringify(parsedToDosFail));
+    }
+    
 }
 
 function makeTime(list) {
@@ -186,9 +249,13 @@ function makeTime(list) {
     successButton.setAttribute("class", "success-button");
     const failButton = document.createElement("button");
     failButton.setAttribute("class", "fail-button");
+    const midButton = document.createElement("button");
+    midButton.setAttribute("class", "mid-button");
     successDiv.appendChild(successButton);
+    successDiv.appendChild(midButton);
     successDiv.appendChild(failButton);
     successButton.innerHTML = "✓";
+    midButton.innerHTML = "▵";
     failButton.innerHTML = "✕";
 
 
@@ -204,7 +271,9 @@ function makeTime(list) {
     timeInput.setAttribute("required", "");
 
     timeForm.addEventListener("submit", handleTimeSubmit);
+
     successButton.addEventListener("click", handleSuccess);
+    midButton.addEventListener("click", handleMid);
     failButton.addEventListener("click", handleFail);
 }
 
@@ -272,8 +341,7 @@ function handleToDoSubmit(event) {
         text: newTodo,
         id: Date.now(),
         time: "",
-        pageCount: 0,
-        date  : today.getDate(),
+        count: 0,
     };
     toDos.push(newTodoObj);
     paintToDo(newTodoObj);
@@ -295,9 +363,9 @@ if (savedToDos) {
     toDos = parsedToDos;
     parsedToDos.forEach(paintToDo);
     hideTimeForm();
-    showAlarm();
-    showSuccessandFail();
+    paintBack();
+    // showAlarm();
 
 }
-setInterval(showAlarm,1000);
+setInterval(checkTime,1000);
 // setInterval(check)
