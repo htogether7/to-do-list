@@ -342,6 +342,7 @@ function handleToDoSubmit(event) {
         id: Date.now(),
         time: "",
         count: 0,
+        date: "",
     };
     toDos.push(newTodoObj);
     paintToDo(newTodoObj);

@@ -17,8 +17,7 @@ function toggleSet() {
     greeting.classList.toggle("light");
     clock.classList.toggle("light");
     toDoList.classList.toggle("light");
-    success.classList.toggle("light");
-    fail.classList.toggle("light");
+    day.classList.toggle("light");
     if (modeImage.classList.contains("mode-image")) {
         modeImage.src = "img/moon.png";
         modeImage.classList.remove("mode-image");
