@@ -360,8 +360,7 @@ const savedToDos = localStorage.getItem("todos");
 const parsedToDos = JSON.parse(savedToDos);
 const today = new Date();
 
-if (savedToDos) {
-    toDos = parsedToDos;
+if (savedToDos!== "null") {
     parsedToDos.forEach(paintToDo);
     hideTimeForm();
     paintBack();
