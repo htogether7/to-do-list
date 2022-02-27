@@ -26,3 +26,23 @@ img {
 .fail {
   background-color: red;
 }
+
+div[id$="day"] {
+  width: 20px;
+  height: 20px;
+  border: 1px black solid;
+  transition: all 2s;
+}
+
+.day-box {
+  display: flex;
+}
+
+/* #seventh-day {
+  background-color: green;
+  transition: all 2s;
+} */
+
+.save {
+  background-color: red;
+}
