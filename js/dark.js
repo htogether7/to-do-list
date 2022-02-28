@@ -4,6 +4,7 @@ const background = document.querySelector("body");
 const success = document.querySelector("#success");
 const fail = document.querySelector("#fail");
 
+
 function saveMode(){
     if (background.classList.contains("dark")) {
         localStorage.setItem("mode", "dark");
@@ -18,6 +19,8 @@ function toggleSet() {
     clock.classList.toggle("light");
     toDoList.classList.toggle("light");
     day.classList.toggle("light");
+    dayBox.classList.toggle("light");
+    todayTask.classList.toggle("light");
     if (modeImage.classList.contains("mode-image")) {
         modeImage.src = "img/moon.png";
         modeImage.classList.remove("mode-image");

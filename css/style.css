@@ -46,3 +46,10 @@ div[id$="day"] {
 .save {
   background-color: red;
 }
+
+.today-task {
+  width: 100px;
+  height: 20px;
+  border: 1px black solid;
+  transition: all 2s;
+}
