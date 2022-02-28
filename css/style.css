@@ -31,7 +31,7 @@ div[id$="day"] {
   width: 20px;
   height: 20px;
   border: 1px black solid;
-  transition: all 2s;
+  transition: all 1s;
 }
 
 .day-box {

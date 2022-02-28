@@ -3,6 +3,27 @@ const dayBox = document.querySelector(".day-box");
 // const showWeek = Array.from({length:7}, ()=>"Not Today");
 const todayTask = document.querySelector(".today-task");
 
+function changeTodayTask () {
+    let changePresentCondition = JSON.parse(localStorage.getItem("today"));
+    let successCount = changePresentCondition[0];
+    let midCount = changePresentCondition[1];
+    let failCount = changePresentCondition[2];
+    let sumCount = successCount + failCount + 2*midCount;
+    let green = successCount + midCount;
+    let red = failCount + midCount;
+
+    if (successCount === failCount) {
+        todayTask.style.backgroundColor = "rgb(255, 255, 0)";
+    } else if (successCount > failCount) {
+        todayTask.style.backgroundColor = `rgb(${Math.round(255*(red/green))}, 255, 0)`;
+        console.log(`rgb(${Math.round(255*(red/green))}, 255, 0)`);
+    } else if (successCount < failCount) {
+        todayTask.style.backgroundColor = `rgb(255, ${Math.round(255*(green/red))}, 0)`;
+        console.log(`rgb(255, ${Math.round(255*(green/red))}, 0)`);
+    }
+
+    // todayTask.style.backgroundColor = `rgb(${im},0,255)`;
+}
 
 
 function saveToday (event) {
@@ -49,7 +70,7 @@ function saveToday (event) {
                         // delete toDoList.children[i];
                         // console.log(toDoList);
                         // dayBox.children[6].classList.add("save");
-                        todayTask.classList.add("save");
+                        // todayTask.classList.add("save");
                     }
                 }
                 for (let x of tmp) {
@@ -73,19 +94,19 @@ function saveToday (event) {
                 // for (let i = 0; i < tmp.length; i++) {
                 //     toDoList.children[i].remove();
                 // }
-                for (let x of tmp) {
-
-                }
 
             }
             // console.log(parsedToDosSave[key].count);
         }
     //     console.log(showToday);
     
-        console.log(tmp);
-        console.log(presentCondition);
-        console.log(week);
+        // console.log(tmp);
+        // console.log(presentCondition);
+        // console.log(week);
+
+        changeTodayTask();
+
     }
 }
-
+window.onbeforeunload = changeTodayTask();
 saveButton.addEventListener("click", saveToday);
