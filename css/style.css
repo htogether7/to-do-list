@@ -31,7 +31,7 @@ div[id$="day"] {
   width: 20px;
   height: 20px;
   border: 1px black solid;
-  transition: all 1s;
+  transition: all 2s;
 }
 
 .day-box {
@@ -51,5 +51,6 @@ div[id$="day"] {
   width: 100px;
   height: 20px;
   border: 1px black solid;
+  background-color: white;
   transition: all 2s;
 }

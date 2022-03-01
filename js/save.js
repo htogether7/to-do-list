@@ -2,6 +2,27 @@ const saveButton = document.querySelector("#save-button");
 const dayBox = document.querySelector(".day-box");
 // const showWeek = Array.from({length:7}, ()=>"Not Today");
 const todayTask = document.querySelector(".today-task");
+const seventhDay = document.querySelector("#seventh-day");
+
+function changeWeek () {
+    for (let x of JSON.parse(localStorage.getItem("week"))) {
+        let successCount = x[0];
+        let midCount = x[1];
+        let failCount = x[2];
+        let sumCount = successCount + failCount + 2*midCount;
+        let green = successCount + midCount;
+        let red = failCount + midCount;
+        if (successCount === failCount) {
+            seventhDay.style.backgroundColor = "rgb(255, 255, 0)";
+        } else if (successCount > failCount) {
+            seventhDay.style.backgroundColor = `rgb(${Math.round(255*(red/green))}, 255, 0)`;
+            console.log(`rgb(${Math.round(255*(red/green))}, 255, 0)`);
+        } else if (successCount < failCount) {
+            seventhDay.style.backgroundColor = `rgb(255, ${Math.round(255*(green/red))}, 0)`;
+            console.log(`rgb(255, ${Math.round(255*(green/red))}, 0)`);
+        }
+    }
+}
 
 function changeTodayTask () {
     let changePresentCondition = JSON.parse(localStorage.getItem("today"));
@@ -41,19 +62,11 @@ function saveToday (event) {
     if (saveAnswer) {
         for (let key in parsedToDosSave) {
             if (parsedToDosSave[key].count === "success" || parsedToDosSave[key].count === "fail" || parsedToDosSave[key].count === "mid") {
-    //             //저장
-    //             // console.log(parsedToDosSave[key].count);
-    //             // localStorage.setItem({})
-    //             showToday[parsedToDosSave[key].count].push(parsedToDosSave[key].text);
-    //             parsedToDosSave[key].count = "saved";
-    //             localStorage.setItem("todos", JSON.stringify(parsedToDosSave));
-    //             localStorage.setItem("todoy", JSON.stringify(showToday));
-                
                 for (let i = 0; i < toDoList.children.length; i++) {
                     if (+toDoList.children[i].id === parsedToDosSave[key].id) {
                         // toDoList.children[i].classList.add("hidden");
-                        parsedToDosSave.splice(key, 1);
-                        localStorage.setItem("todos", JSON.stringify(parsedToDosSave));
+                        // parsedToDosSave.splice(key, 1);
+                        // localStorage.setItem("todos", JSON.stringify(parsedToDosSave)); // 이거 뭔코드지?
                         console.log(toDoList.children[i]);
                         if (toDoList.children[i].classList.contains("success")) {
                             presentCondition[0]++;
@@ -63,8 +76,10 @@ function saveToday (event) {
                             presentCondition[2]++;
                         }
                         localStorage.setItem("today", JSON.stringify(presentCondition));
-
-                        tmp.push(+toDoList.children[i].id);
+                        if (toDoList.children[i].classList.contains("success") || toDoList.children[i].classList.contains("mid") || toDoList.children[i].classList.contains("fail")) {
+                            tmp.push(+toDoList.children[i].id);
+                        }
+                        
                         console.log(toDoList.children[i]);
 
                         // delete toDoList.children[i];
@@ -73,15 +88,7 @@ function saveToday (event) {
                         // todayTask.classList.add("save");
                     }
                 }
-                for (let x of tmp) {
-                    console.log("now", x);
-                    for (let j = 0; j < toDoList.children.length; j++) {
-                        if (x === +toDoList.children[j].id) {
-                            toDoList.children[j].remove();
-                            // break;
-                        }
-                    }
-                }
+
                 
                 // toDoList.children = (Array.from(toDoList.children).filter((li, index) => !tmp.includes(index)));
 
@@ -98,6 +105,15 @@ function saveToday (event) {
             }
             // console.log(parsedToDosSave[key].count);
         }
+        // for (let x of tmp) {
+        //     console.log("now", x);
+        //     for (let j = 0; j < toDoList.children.length; j++) {
+        //         if (x === +toDoList.children[j].id) {
+        //             toDoList.children[j].remove();
+        //             // break;
+        //         }
+        //     }
+        // }
     //     console.log(showToday);
     
         // console.log(tmp);
@@ -107,6 +123,25 @@ function saveToday (event) {
         changeTodayTask();
 
     }
+    if (dayChangeCount === 1) {
+        seventhDay.style.backgroundColor = `${todayTask.style.backgroundColor}`;
+        let weekChange = JSON.parse(localStorage.getItem("week"));
+        weekChange.shift();
+        weekChange.push(JSON.parse(localStorage.getItem("today")));
+        localStorage.setItem("week", JSON.stringify(weekChange));
+        changeWeek();
+        localStorage.setItem("today", "[0,0,0]");
+        localStorage.setItem("todos", "[]");
+        dayChangeCount = 0;
+        for (let x of document.querySelector("#todo-list").children) {
+            x.remove();
+        }
+        changeTodayTask();
+    }
 }
-window.onbeforeunload = changeTodayTask();
+if (localStorage.getItem("today")) {
+    window.onbeforeunload = changeTodayTask();
+    window.onbeforeunload = changeWeek();
+}
+
 saveButton.addEventListener("click", saveToday);

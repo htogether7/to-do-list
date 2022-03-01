@@ -333,24 +333,30 @@ function paintToDo(newTodo) {
 
 
 function handleToDoSubmit(event) {
-    event.preventDefault();
-    const newTodo = toDoInput.value;
-    toDoInput.value = "";
-    const newTodoObj = {
-        text: newTodo,
-        id: Date.now(),
-        time: "",
-        count: 0,
-        date: "",
-    };
-    toDos.push(newTodoObj);
-    paintToDo(newTodoObj);
-    saveToDos();
+    if (dayChangeCount !== 1) {
+        event.preventDefault();
+        const newTodo = toDoInput.value;
+        toDoInput.value = "";
+        const newTodoObj = {
+            text: newTodo,
+            id: Date.now(),
+            time: "",
+            count: 0,
+            date: "",
+        };
+        toDos.push(newTodoObj);
+        paintToDo(newTodoObj);
+        saveToDos();
+    } else {
+        confirm("전날 등록을 먼저 해주세요");
+    }
+
 
 }
 
 
 toDoForm.addEventListener("submit", handleToDoSubmit);
+
 
 // selectTime.addEventListener("submit", handleTimeSubmit);
 
