@@ -12,7 +12,7 @@ function onLoginSubmit(event) {
     localStorage.setItem(USER_NAME, userName);
     paintGreetings(userName);
     localStorage.setItem("today", "[0,0,0]");
-    localStorage.setItem("week", "[0,0,0,0,0,0,0]");
+    localStorage.setItem("week", "[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]");
 }
 
 function paintGreetings(name) {

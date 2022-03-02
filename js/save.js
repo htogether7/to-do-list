@@ -2,24 +2,29 @@ const saveButton = document.querySelector("#save-button");
 const dayBox = document.querySelector(".day-box");
 // const showWeek = Array.from({length:7}, ()=>"Not Today");
 const todayTask = document.querySelector(".today-task");
+const firstDay = document.querySelector("#first-day");
+const secondDay = document.querySelector("#second-day");
+const thirdDay = document.querySelector("#third-day");
+const fourthDay = document.querySelector("#fourth-day");
+const fifthDay = document.querySelector("#fifth-day");
+const sixthDay = document.querySelector("#sixth-day");
 const seventhDay = document.querySelector("#seventh-day");
 
 function changeWeek () {
-    for (let x of JSON.parse(localStorage.getItem("week"))) {
-        let successCount = x[0];
-        let midCount = x[1];
-        let failCount = x[2];
+    let dayList = [firstDay, secondDay, thirdDay, fourthDay, fifthDay, sixthDay, seventhDay];
+    for (let i = 0; i < JSON.parse(localStorage.getItem("week")).length; i++) {
+        let successCount = JSON.parse(localStorage.getItem("week"))[i][0];
+        let midCount = JSON.parse(localStorage.getItem("week"))[i][1];
+        let failCount = JSON.parse(localStorage.getItem("week"))[i][2];
         let sumCount = successCount + failCount + 2*midCount;
         let green = successCount + midCount;
         let red = failCount + midCount;
         if (successCount === failCount) {
-            seventhDay.style.backgroundColor = "rgb(255, 255, 0)";
+            dayList[i].style.backgroundColor = "rgb(255, 255, 0)";
         } else if (successCount > failCount) {
-            seventhDay.style.backgroundColor = `rgb(${Math.round(255*(red/green))}, 255, 0)`;
-            console.log(`rgb(${Math.round(255*(red/green))}, 255, 0)`);
+            dayList[i].style.backgroundColor = `rgb(${Math.round(255*(red/green))}, 255, 0)`;
         } else if (successCount < failCount) {
-            seventhDay.style.backgroundColor = `rgb(255, ${Math.round(255*(green/red))}, 0)`;
-            console.log(`rgb(255, ${Math.round(255*(green/red))}, 0)`);
+            dayList[i].style.backgroundColor = `rgb(255, ${Math.round(255*(green/red))}, 0)`;
         }
     }
 }
@@ -68,11 +73,14 @@ function saveToday (event) {
                         // parsedToDosSave.splice(key, 1);
                         // localStorage.setItem("todos", JSON.stringify(parsedToDosSave)); // 이거 뭔코드지?
                         console.log(toDoList.children[i]);
-                        if (toDoList.children[i].classList.contains("success")) {
+                        if (toDoList.children[i].classList.contains("success") && !toDoList.children[i].classList.contains("saved")) {
+                            toDoList.children[i].classList.add("saved");
                             presentCondition[0]++;
-                        } else if (toDoList.children[i].classList.contains("mid")) {
+                        } else if (toDoList.children[i].classList.contains("mid") && !toDoList.children[i].classList.contains("saved")) {
+                            toDoList.children[i].classList.add("saved");
                             presentCondition[1]++;
-                        } else if (toDoList.children[i].classList.contains("fail")) {
+                        } else if (toDoList.children[i].classList.contains("fail") && !toDoList.children[i].classList.contains("saved")) {
+                            toDoList.children[i].classList.add("saved");
                             presentCondition[2]++;
                         }
                         localStorage.setItem("today", JSON.stringify(presentCondition));
@@ -132,11 +140,11 @@ function saveToday (event) {
         changeWeek();
         localStorage.setItem("today", "[0,0,0]");
         localStorage.setItem("todos", "[]");
-        dayChangeCount = 0;
         for (let x of document.querySelector("#todo-list").children) {
             x.remove();
         }
         changeTodayTask();
+        dayChangeCount = 0;
     }
 }
 if (localStorage.getItem("today")) {
