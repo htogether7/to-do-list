@@ -1,56 +1,42 @@
-.hidden {
-  display: none;
+.header-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-img {
+.week-task {
+  display: flex;
+  justify-content: space-around;
+}
+
+div[class$="day"] {
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+  /* background-color: red; */
+}
+
+.today-task {
+  width: 50px;
+  height: 10px;
+  border: 1px solid black;
+}
+
+.header-container > div {
+  margin: 10px;
+}
+
+img[class$="image"] {
   width: 10px;
   height: 10px;
 }
 
-.dark {
-  background-color: black;
-}
-
-.light {
-  color: white;
-}
-
-.success {
-  background-color: green;
-}
-
-.mid {
-  background-color: yellow;
-}
-
-.fail {
-  background-color: red;
-}
-
-div[id$="day"] {
-  width: 20px;
-  height: 20px;
-  border: 1px black solid;
-  transition: all 2s;
-}
-
-.day-box {
+.color-container {
   display: flex;
+  padding: 5px;
 }
 
-/* #seventh-day {
-  background-color: green;
-  transition: all 2s;
-} */
-
-.save {
-  background-color: red;
-}
-
-.today-task {
-  width: 100px;
-  height: 20px;
-  border: 1px black solid;
-  background-color: white;
-  transition: all 2s;
+.button-container {
+  display: flex;
 }

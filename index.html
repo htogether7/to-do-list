@@ -1,50 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Momentum</title>
+    <title>TodoList</title>
 </head>
 <body>
-    <div>
-        <button id="mode">
-            <img class="mode-image" src="img/sun.png">
-        </button>
-    </div>
-    <div class="day-box">
-        <div id="first-day"></div>
-        <div id="second-day"></div>
-        <div id="third-day"></div>
-        <div id="fourth-day"></div>
-        <div id="fifth-day"></div>
-        <div id="sixth-day"></div>
-        <div id="seventh-day"></div>
-    </div>
-    <div class="today-task"></div>
-    <form id="login-form" class="hidden">
-        <input required maxlength="15" type="text" placeholder="What is your name?">
-        <button>Log In</button>
-    </form>
-    <h1 class="hidden" id="greeting"></h1>
-    <form id = "todo-form">
-        <input type="text" placeholder="Write a To Do and Press Enter" required>
-    </form>
-    <ul id="todo-list"></ul>
-    <h2 id="clock">00:00:00</h2>
-    <h2 id="day"></h2>
-    <div>
-        <button id="save-button">
-            <img class="save-image" src="img/save.png">
-        </button>
-    </div>
-    <script src="js/clock.js"></script>
-    <script src="js/greetings.js"></script>
-    <script src="js/todo.js"></script>
-    <script src="js/save.js"></script>
-    <script src="js/dark.js"></script>
-    
-    
+    <header>
+        <div class="header-container">
+            <div class="color-container">
+                <div class="week-task">
+                    <div class="first-day"></div>
+                    <div class="second-day"></div>
+                    <div class="third-day"></div>
+                    <div class="fourth-day"></div>
+                    <div class="fifth-day"></div>
+                    <div class="sixth-day"></div>
+                    <div class="seventh-day"></div>
+                </div>
+                <div class="today-task"></div>
+            </div>
+            <div class="button-container">
+                <button class="help-button">
+                    <img class="help-image" src="img/question.png">
+                </button>
+
+                <button class="mode-button">
+                    <img class="mode-image" src="img/sun.png">
+                </button>
+            </div>
+        </div>
+        <div class="time-container">
+            <h2>날짜 시간</h2>
+        </div>
+    </header>
 </body>
 </html>

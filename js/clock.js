@@ -1,6 +1,6 @@
 const clock = document.querySelector("h2#clock");
 const day = document.querySelector("h2#day");
-let dayChangeCount = 1;
+let dayChangeCount = 0;
 
 function getClock() {
     const parsedToDosClock = JSON.parse(localStorage.getItem("todos"));
