@@ -9,6 +9,18 @@ function deleteTodo(event) {
     event.target.parentElement.remove();
 }
 
+function handleSuccess(event) {
+    let success = event.target.parentElement.parentElement;
+    success.classList.add("success");
+    console.log(success.parentElement.id);
+}
+
+function handleFail(event) {
+    let success = event.target.parentElement.parentElement;
+    success.classList.add("fail");
+    console.log(success.parentElement.id);
+}
+
 function paintToDo(obj) {
     const li = document.createElement("li");
     const liContainer = document.createElement("div");
@@ -49,7 +61,8 @@ function paintToDo(obj) {
     timeButton.appendChild(timeImage);
 
     toDoList.appendChild(li);
-
+    successButton.addEventListener("click", handleSuccess);
+    failButton.addEventListener("click", handleFail);
     deleteButton.addEventListener("click", deleteTodo);
 
 }
