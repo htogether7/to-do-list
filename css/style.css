@@ -155,3 +155,7 @@ li {
 div[class~="hidden"] {
   display: none;
 }
+
+div[class$="day"] {
+  transition: all 2s;
+}

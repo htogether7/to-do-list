@@ -2,6 +2,8 @@ const toDoForm = document.querySelector(".todo-form");
 const toDoInput = toDoForm.querySelector(".todo-form input");
 const toDoList = document.querySelector(".todo-list");
 
+
+
 function deleteTodo(event) {
     let toDosDelete = JSON.parse(localStorage.getItem("todos"));
     let newToDosDelete = toDosDelete.filter(x => (x.id !== +event.target.parentElement.id));
@@ -24,6 +26,10 @@ function handleSuccess(event) {
         success.classList.add("success");
         success.children[1].classList.add("hidden");
         success.parentElement.children[1].classList.add("hidden");
+        let week = JSON.parse(localStorage.getItem("week"));
+        week[week.length-1][0]++;
+        localStorage.setItem("week", JSON.stringify(week));
+        colorToday();
     }
     
 }
@@ -42,6 +48,10 @@ function handleFail(event) {
         fail.classList.add("fail");
         fail.children[1].classList.add("hidden");
         fail.parentElement.children[1].classList.add("hidden");
+        let week = JSON.parse(localStorage.getItem("week"));
+        week[week.length-1][2]++;
+        localStorage.setItem("week", JSON.stringify(week));
+        colorToday();
     }
     
 }
@@ -134,6 +144,7 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 //새로고침해도 화면에 유지될 수 있게함.
 if (JSON.parse(localStorage.getItem("todos"))) {  
+    colorToday();
     for (let x of JSON.parse(localStorage.getItem("todos"))) {
         paintToDo(x);
         for (let y of toDoList.children) {
