@@ -11,7 +11,6 @@ function deleteTodo(event) {
     event.target.parentElement.remove();
 }
 
-
 function handleSuccess(event) {
     let success = event.target.parentElement.parentElement;
     let toDosHandleSuccess = JSON.parse(localStorage.getItem("todos"));
@@ -31,7 +30,7 @@ function handleSuccess(event) {
         localStorage.setItem("week", JSON.stringify(week));
         colorToday();
     }
-    
+
 }
 
 function handleFail(event) {
