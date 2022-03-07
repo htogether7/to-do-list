@@ -9,16 +9,41 @@ function deleteTodo(event) {
     event.target.parentElement.remove();
 }
 
+
 function handleSuccess(event) {
     let success = event.target.parentElement.parentElement;
-    success.classList.add("success");
-    console.log(success.parentElement.id);
+    let toDosHandleSuccess = JSON.parse(localStorage.getItem("todos"));
+    toDosHandleSuccess.map((todo) => {
+        if (todo.id === +success.parentElement.id) {
+            todo.count = "success";
+        }
+    });
+    localStorage.setItem("todos", JSON.stringify(toDosHandleSuccess));
+    const successAnswer = confirm("완료했습니까?");
+    if (successAnswer) {
+        success.classList.add("success");
+        success.children[1].classList.add("hidden");
+        success.parentElement.children[1].classList.add("hidden");
+    }
+    
 }
 
 function handleFail(event) {
-    let success = event.target.parentElement.parentElement;
-    success.classList.add("fail");
-    console.log(success.parentElement.id);
+    let fail = event.target.parentElement.parentElement;
+    let toDosHandleFail = JSON.parse(localStorage.getItem("todos"));
+    toDosHandleFail.map((todo) => {
+        if (todo.id === +fail.parentElement.id) {
+            todo.count = "fail";
+        }
+    });
+    localStorage.setItem("todos", JSON.stringify(toDosHandleFail));
+    const failAnswer = confirm("오늘 하지 못했습니까?");
+    if (failAnswer) {
+        fail.classList.add("fail");
+        fail.children[1].classList.add("hidden");
+        fail.parentElement.children[1].classList.add("hidden");
+    }
+    
 }
 
 function paintToDo(obj) {
@@ -65,6 +90,22 @@ function paintToDo(obj) {
     failButton.addEventListener("click", handleFail);
     deleteButton.addEventListener("click", deleteTodo);
 
+    let parsedToDosPaint = JSON.parse(localStorage.getItem("todos"));
+    for (let x of parsedToDosPaint) {
+        if (x.id === +li.id && x.count !== 0) {
+            //배경 칠하고, li-button-container 숨기기
+            if (x.count === "success") {
+                li.children[1].classList.add("hidden");
+                li.children[0].classList.add("success");
+                li.children[0].children[1].classList.add("hidden");
+            } else if (x.count === "fail") {
+                li.children[1].classList.add("hidden");
+                li.children[0].classList.add("fail");
+                li.children[0].children[1].classList.add("hidden");
+            }
+        }
+    }
+    
 }
 
 function handleToDoSubmit(event) {
@@ -95,6 +136,16 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 if (JSON.parse(localStorage.getItem("todos"))) {  
     for (let x of JSON.parse(localStorage.getItem("todos"))) {
         paintToDo(x);
+        for (let y of toDoList.children) {
+            if (x.id === +y.id) {
+                if (x.count === "fail") {
+                    y.children[0].classList.add("fail")
+                } else if (x.count === "success") {
+                    y.children[0].classList.add("success");
+                }
+                break;
+            }
+        }
     }
 }
 

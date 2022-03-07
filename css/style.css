@@ -151,3 +151,7 @@ li {
 .mid {
   background-color: yellow;
 }
+
+div[class~="hidden"] {
+  display: none;
+}
