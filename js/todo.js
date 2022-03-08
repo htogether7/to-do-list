@@ -55,6 +55,33 @@ function handleFail(event) {
     
 }
 
+function handleSubmitTime(event) {
+    event.preventDefault();
+    // // event.target.parentElement.parentElement.children[0].innerText = `${event.target.children[0].value}까지`;
+    // console.log(event.target.parentElement.parentElement.children[0]);
+    // event.target.parentElement.parentElement.children[0].classList.remove("hidden");
+    // event.target.parentElement.parentElement.children[0].innerText = `${event.target.parentElement.children}까지`;
+    // event.target.parentElement.classList.add("hidden");
+    console.log(event.target);
+}
+
+function handleTime(event) {
+    const timeId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    const timeForm = document.createElement("form");
+    const timeInput = document.createElement("input");
+    const timeSubmitButton = document.createElement("input");
+    timeForm.appendChild(timeInput);
+    timeForm.appendChild(timeSubmitButton);
+    event.target.parentElement.appendChild(timeForm);
+    timeInput.setAttribute("type", "time");
+    timeSubmitButton.setAttribute("type", "submit");
+    timeSubmitButton.innerText = "제출";
+    event.target.classList.add("hidden");
+    timeForm.addEventListener("submit", handleSubmitTime);
+    // timeSubmitButton.addEventListener("click", handleSubmitTime);
+    // const 
+}
+
 function paintToDo(obj) {
     const li = document.createElement("li");
     const liContainer = document.createElement("div");
@@ -62,6 +89,7 @@ function paintToDo(obj) {
     const liButtonContainer = document.createElement("div");
     const successButton = document.createElement("button");
     const failButton = document.createElement("button");
+    const timeDiv = document.createElement("div");
     const timeButton = document.createElement("button");
     const deleteButton = document.createElement("button");
     const timeImage = document.createElement("img");
@@ -72,9 +100,11 @@ function paintToDo(obj) {
     liButtonContainer.classList.add("li-button-container");
     successButton.classList.add("success-button");
     failButton.classList.add("fail-button");
+    timeDiv.classList.add("time-div");
     timeButton.classList.add("time-button");
     deleteButton.classList.add("delete-button");
     timeImage.classList.add("time-image");
+    
 
     timeImage.src = "img/time.png";
 
@@ -83,7 +113,7 @@ function paintToDo(obj) {
     successButton.innerHTML = "✓";
     failButton.innerHTML = "✕";
     deleteButton.innerHTML = "✕";
-    
+    timeButton.innerText = "T";
 
     li.appendChild(liContainer);
     li.appendChild(deleteButton);
@@ -91,13 +121,15 @@ function paintToDo(obj) {
     liContainer.appendChild(liButtonContainer);
     liButtonContainer.appendChild(successButton);
     liButtonContainer.appendChild(failButton);
-    liButtonContainer.appendChild(timeButton);
-    timeButton.appendChild(timeImage);
+    timeDiv.appendChild(timeButton);
+    liButtonContainer.appendChild(timeDiv);
+    // timeButton.appendChild(timeImage);
 
     toDoList.appendChild(li);
     successButton.addEventListener("click", handleSuccess);
     failButton.addEventListener("click", handleFail);
     deleteButton.addEventListener("click", deleteTodo);
+    timeButton.addEventListener("click", handleTime);
 
     let parsedToDosPaint = JSON.parse(localStorage.getItem("todos"));
     for (let x of parsedToDosPaint) {

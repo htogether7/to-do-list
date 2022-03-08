@@ -109,7 +109,7 @@ li {
   height: 5%;
   width: 80%;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   border: 1px solid black;
 }
