@@ -3,6 +3,7 @@ const loginForm = document.querySelector(".login-form");
 const greeting = document.querySelector(".greeting");
 
 function onLoginSubmit(event) {
+    const date = new Date();
     event.preventDefault();
     loginForm.classList.add("hidden");
     const userName = loginInput.value;
@@ -10,6 +11,7 @@ function onLoginSubmit(event) {
     paintGreetings(userName);
     localStorage.setItem("todos", "[]");
     localStorage.setItem("week", "[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]");
+    localStorage.setItem("daychange", 0);
 }
 
 function paintGreetings(name) {

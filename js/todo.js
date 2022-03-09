@@ -209,23 +209,28 @@ function paintToDo(obj) {
 
 function handleToDoSubmit(event) {
     event.preventDefault();
-    const newTodo = toDoInput.value;
-    toDoInput.value = "";
+    if (+localStorage.getItem("daychange") === 1) {
+        confirm("성공 여부를 체크하지 않은 항목들을 먼저 처리해주세요");
+    } else {
+        const newTodo = toDoInput.value;
+        toDoInput.value = "";
+    
+        const newTodoObj = {
+            text: newTodo,
+            id: Date.now(),
+            time: "",
+            count: 0,
+        };
+    
+        // localStorage todos에 저장
+        let toDos = JSON.parse(localStorage.getItem("todos"));
+        toDos.push(newTodoObj);
+        localStorage.setItem("todos", JSON.stringify(toDos));
+    
+        // html li 추가
+        paintToDo(newTodoObj);
+    }
 
-    const newTodoObj = {
-        text: newTodo,
-        id: Date.now(),
-        time: "",
-        count: 0,
-    };
-
-    // localStorage todos에 저장
-    let toDos = JSON.parse(localStorage.getItem("todos"));
-    toDos.push(newTodoObj);
-    localStorage.setItem("todos", JSON.stringify(toDos));
-
-    // html li 추가
-    paintToDo(newTodoObj);
 }
 
 
