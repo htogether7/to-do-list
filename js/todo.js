@@ -14,20 +14,51 @@ function deleteTodo(event) {
 function handleSuccess(event) {
     let success = event.target.parentElement.parentElement;
     let toDosHandleSuccess = JSON.parse(localStorage.getItem("todos"));
+    let achievement = 0;
     toDosHandleSuccess.map((todo) => {
         if (todo.id === +success.parentElement.id) {
-            todo.count = "success";
+            if (!todo.time) {
+                todo.count = "success";
+            } else {
+                //time이 있을 때 
+                const knowTime = new Date();
+                const knowHour = knowTime.getHours();
+                const knowMinute = knowTime.getMinutes(); 
+                const [limitHour, limitMinute] = todo.time.split(":");
+                if (knowHour < limitHour) {
+                    todo.count = "success";
+                } else if (knowHour > limitHour) {
+                    todo.count = "mid";
+                    achievement = 1;
+                } else {
+                    if (knowMinute <= limitMinute) {
+                        todo.count = "success";
+                    } else {
+                        todo.count = "mid";
+                        achievement = 1;
+                    }
+                }
+            }
+            
         }
+
     });
     localStorage.setItem("todos", JSON.stringify(toDosHandleSuccess));
     const successAnswer = confirm("완료했습니까?");
     if (successAnswer) {
-        success.classList.add("success");
+        let week = JSON.parse(localStorage.getItem("week"));
         success.children[1].classList.add("hidden");
         success.parentElement.children[1].classList.add("hidden");
-        let week = JSON.parse(localStorage.getItem("week"));
-        week[week.length-1][0]++;
-        localStorage.setItem("week", JSON.stringify(week));
+        if (!achievement) {
+            success.classList.add("success");
+            week[week.length-1][0]++;
+            localStorage.setItem("week", JSON.stringify(week));
+        } else {
+            success.classList.add("mid");
+            week[week.length-1][1]++;
+            localStorage.setItem("week", JSON.stringify(week));
+        }
+        
         colorToday();
     }
 
@@ -57,30 +88,39 @@ function handleFail(event) {
 
 function handleSubmitTime(event) {
     event.preventDefault();
+    const timeValue = event.target.children[0].value;
+    event.target.parentElement.children[0].classList.remove("hidden");
+    event.target.parentElement.children[0].innerText = timeValue;
+    event.target.classList.add("hidden");
+
+    const timeId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    let parsedToDosSubmitTime = JSON.parse(localStorage.getItem("todos"));
+    for (let x of parsedToDosSubmitTime) {
+        if (x.id === +timeId) {
+            x.time = timeValue;
+            break;
+        }
+    }
+    localStorage.setItem("todos", JSON.stringify(parsedToDosSubmitTime));
+}
+
+
+function handleTime(event) {
+    // event.preventDefault();
     // // event.target.parentElement.parentElement.children[0].innerText = `${event.target.children[0].value}까지`;
     // console.log(event.target.parentElement.parentElement.children[0]);
     // event.target.parentElement.parentElement.children[0].classList.remove("hidden");
     // event.target.parentElement.parentElement.children[0].innerText = `${event.target.parentElement.children}까지`;
     // event.target.parentElement.classList.add("hidden");
-    console.log(event.target);
+    const timeButton = event.target.parentElement.children[0];
+    const timeForm = event.target.parentElement.children[1];
+    timeButton.classList.add("hidden");
+    timeForm.classList.remove("hidden");
+    timeForm.addEventListener("submit", handleSubmitTime);
+    // console.log(event.target.parentElement.children);
+    // timeButton.innerText = event.target
 }
 
-function handleTime(event) {
-    const timeId = event.target.parentElement.parentElement.parentElement.parentElement.id;
-    const timeForm = document.createElement("form");
-    const timeInput = document.createElement("input");
-    const timeSubmitButton = document.createElement("input");
-    timeForm.appendChild(timeInput);
-    timeForm.appendChild(timeSubmitButton);
-    event.target.parentElement.appendChild(timeForm);
-    timeInput.setAttribute("type", "time");
-    timeSubmitButton.setAttribute("type", "submit");
-    timeSubmitButton.innerText = "제출";
-    event.target.classList.add("hidden");
-    timeForm.addEventListener("submit", handleSubmitTime);
-    // timeSubmitButton.addEventListener("click", handleSubmitTime);
-    // const 
-}
 
 function paintToDo(obj) {
     const li = document.createElement("li");
@@ -93,6 +133,9 @@ function paintToDo(obj) {
     const timeButton = document.createElement("button");
     const deleteButton = document.createElement("button");
     const timeImage = document.createElement("img");
+    const timeForm = document.createElement("form");
+    const timeInput = document.createElement("input");
+    const timeSubmitButton = document.createElement("input");
 
     li.id = obj.id;
     liContainer.classList.add("li-container");
@@ -104,6 +147,10 @@ function paintToDo(obj) {
     timeButton.classList.add("time-button");
     deleteButton.classList.add("delete-button");
     timeImage.classList.add("time-image");
+    timeInput.setAttribute("type", "time");
+    timeInput.setAttribute("required", "");
+    timeSubmitButton.setAttribute("type", "submit");
+    timeForm.classList.add("hidden");
     
 
     timeImage.src = "img/time.png";
@@ -130,6 +177,9 @@ function paintToDo(obj) {
     failButton.addEventListener("click", handleFail);
     deleteButton.addEventListener("click", deleteTodo);
     timeButton.addEventListener("click", handleTime);
+    timeForm.appendChild(timeInput);
+    timeForm.appendChild(timeSubmitButton);
+    timeDiv.appendChild(timeForm);
 
     let parsedToDosPaint = JSON.parse(localStorage.getItem("todos"));
     for (let x of parsedToDosPaint) {
@@ -143,7 +193,15 @@ function paintToDo(obj) {
                 li.children[1].classList.add("hidden");
                 li.children[0].classList.add("fail");
                 li.children[0].children[1].classList.add("hidden");
+            } else if (x.count === "mid") {
+                li.children[1].classList.add("hidden");
+                li.children[0].classList.add("mid");
+                li.children[0].children[1].classList.add("hidden");
             }
+        }
+
+        if (x.id === +li.id && x.time) {
+            li.children[0].children[1].children[2].children[0].innerText = x.time;
         }
     }
     
