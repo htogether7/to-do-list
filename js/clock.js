@@ -1,7 +1,7 @@
 // const clock = document.querySelector("h2#clock");
 // const day = document.querySelector("h2#day");
 // let dayChangeCount = 0;
-
+const toDoList = document.querySelector(".todo-list");
 const timeContainer = document.querySelector(".time-container");
 let timeText = timeContainer.children[0];
 
@@ -16,17 +16,39 @@ function getClock() {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
     timeText.innerText = `${month+1}/${whatdate} ${days[whatday]} ${hours}:${minutes}:${seconds}`;
 
-    if (hours === "00" && minutes === "00" && seconds === "00") {
+    if (date.getDate() !== +localStorage.getItem("date")) {
         localStorage.setItem("daychange", "1");
     }
 
-    if (+localStorage.getItem("daychange") === 1) {
-        //하루가 바뀌었으면,
-        const parsedToDosClock = JSON.parse(localStorage.getItem("todos"));
-        // for (let x of parsedToDosClock) {
-        //     if ()
-        // }
+    // if (date.getMinutes() !== +localStorage.getItem("date")) {
+    //     localStorage.setItem("daychange", "1");
+    // }
+
+    if (localStorage.getItem("todos")) {
+        if (+localStorage.getItem("daychange") === 1) {
+            //하루가 바뀌었으면,
+            let parsedToDosClock = JSON.parse(localStorage.getItem("todos"));
+            let checkDayChange = 1;
+            for (let x of parsedToDosClock) {
+                if (+x.count === 0) {
+                    checkDayChange = 0;
+                    console.log(x);
+                    break;
+                }
+            }
+            if (checkDayChange === 1) {
+                localStorage.setItem("daychange", "0");
+                localStorage.setItem("date", date.getDate());
+                localStorage.setItem("todos", "[]");
+                for (let y of toDoList.children) {
+                    y.remove();
+                }
+                handleDayChange();
+            }
+    
+        }
     }
+
 
     // const parsedToDosClock = JSON.parse(localStorage.getItem("todos"));
     // if (`${month+1}/${whatdate}` !== localStorage.getItem("date")) {
