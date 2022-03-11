@@ -10,7 +10,8 @@ function onLoginSubmit(event) {
     localStorage.setItem("name", userName);
     localStorage.setItem("todos", "[]");
     localStorage.setItem("week", "[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]");
-    localStorage.setItem("date" , date.date());
+    localStorage.setItem("date" , date.getDate());
+    // localStorage.setItem("date", date.getMinutes());
     localStorage.setItem("daychange", "0");
     paintGreetings(userName);
 }

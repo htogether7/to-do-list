@@ -238,7 +238,7 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 //새로고침해도 화면에 유지될 수 있게함.
 if (JSON.parse(localStorage.getItem("todos"))) {  
-    colorToday();
+    colorWeek();
     for (let x of JSON.parse(localStorage.getItem("todos"))) {
         paintToDo(x);
         for (let y of toDoList.children) {
@@ -252,6 +252,7 @@ if (JSON.parse(localStorage.getItem("todos"))) {
             }
         }
     }
+
 }
 
 

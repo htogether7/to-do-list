@@ -39,6 +39,7 @@ function getClock() {
             if (checkDayChange === 1) {
                 localStorage.setItem("daychange", "0");
                 localStorage.setItem("date", date.getDate());
+                // localStorage.setItem("date", date.getMinutes());
                 localStorage.setItem("todos", "[]");
                 for (let y of toDoList.children) {
                     y.remove();
