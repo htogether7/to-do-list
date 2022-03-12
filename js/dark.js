@@ -1,48 +1,26 @@
-const modeButton = document.querySelector("#mode");
-const modeImage = document.querySelector("#mode img")
-const background = document.querySelector("body");
-const success = document.querySelector("#success");
-const fail = document.querySelector("#fail");
+const modeButton = document.querySelector("#mode-button");
+const body = document.querySelector("body");
+const headerContainer = document.querySelector("#header-container");
+const articleContainer = document.querySelector("#article-container");
+const timeContainer = document.querySelector("#time-container");
+const greeting = document.querySelector("#greeting");
+const time = document.querySelector("#time");
+const modeImage = document.querySelector("#mode-image");
 
-
-function saveMode(){
-    if (background.classList.contains("dark")) {
-        localStorage.setItem("mode", "dark");
+function handleClickModeButton(event) {
+    console.log("clicked!");
+    body.classList.toggle("dark-mode");
+    headerContainer.classList.toggle("dark-mode");
+    articleContainer.classList.toggle("dark-mode");
+    timeContainer.classList.toggle("dark-mode");
+    greeting.classList.toggle("dark-mode");
+    time.classList.toggle("dark-mode");
+    // modeImage.classList.toggle("dark-mode");
+    if (body.classList.contains("dark-mode")) {
+        modeImage.setAttribute("src", "../img/moon.png");
     } else {
-        localStorage.setItem("mode", "light");
+        modeImage.setAttribute("src", "../img/sun.png");
     }
 }
 
-function toggleSet() {
-    background.classList.toggle("dark");
-    greeting.classList.toggle("light");
-    clock.classList.toggle("light");
-    toDoList.classList.toggle("light");
-    day.classList.toggle("light");
-    dayBox.classList.toggle("light");
-    todayTask.classList.toggle("light");
-    if (modeImage.classList.contains("mode-image")) {
-        modeImage.src = "img/moon.png";
-        modeImage.classList.remove("mode-image");
-    } else {
-        modeImage.src = "img/sun.png";
-        modeImage.classList.add("mode-image");
-    }
-}
-
-function changeMode(event) {
-    toggleSet();
-    saveMode();
-    
-}
-
-function handleReload() {
-    //
-    if (localStorage.getItem("mode") === "dark" && !(background.classList.length) || localStorage.getItem("mode") === "light" && background.classList[0] === "dark") {
-        toggleSet();
-        saveMode();
-    }
-}
-
-window.onbeforeunload = handleReload();
-modeButton.addEventListener("click", changeMode);
+modeButton.addEventListener("click", handleClickModeButton);

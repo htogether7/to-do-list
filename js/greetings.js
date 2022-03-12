@@ -1,6 +1,6 @@
 const loginInput = document.querySelector(".login-form input");
 const loginForm = document.querySelector(".login-form");
-const greeting = document.querySelector(".greeting");
+
 
 function onLoginSubmit(event) {
     const date = new Date();

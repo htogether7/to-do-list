@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <div class="header-container">
+        <div id="header-container">
             <div class="color-container">
                 <div class="week-task">
                     <div class="first-day"></div>
@@ -22,26 +22,26 @@
                 </div>
             </div>
             <div class="header-button-container">
-                <button class="help-button">
-                    <img class="help-image" src="img/question.png">
+                <button id="help-button">
+                    <img id="help-image" src="img/question.png">
                 </button>
 
-                <button class="mode-button">
-                    <img class="mode-image" src="img/sun.png">
+                <button id="mode-button">
+                    <img id="mode-image" src="img/sun.png">
                 </button>
             </div>
         </div>
     </header>
     <article>
-        <div class="article-container">
-            <div class="time-container">
-                <h2>날짜 시간</h2>
+        <div id="article-container">
+            <div id="time-container">
+                <h2 id="time">날짜 시간</h2>
             </div>
-            <div class="todo-container">
+            <div id="todo-container">
                 <form class="login-form">
                     <input required maxlength="15" type="text" placeholder="What is your name?">
                 </form>
-                <h2 class="greeting"></h2>
+                <h2 id="greeting"></h2>
 
                 <form class="todo-form">
                     <input type="text" placeholder="Write a To Do and Press Enter" required>
@@ -52,6 +52,7 @@
         </div>
 
     </article>
+    <script src="js/dark.js"></script>
     <script src="js/color.js"></script>
     <script src="js/week.js"></script>
     <script src="js/clock.js"></script>

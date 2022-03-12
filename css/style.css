@@ -1,7 +1,8 @@
 * {
   margin: 0;
 }
-.header-container {
+
+#header-container {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -26,11 +27,11 @@ div[class$="day"] {
   /* background-color: red; */
 }
 
-.header-container > div {
+#header-container > div {
   margin: 10px;
 }
 
-img[class$="image"] {
+img[id$="image"] {
   width: 25px;
   height: 25px;
 }
@@ -44,7 +45,7 @@ img[class$="image"] {
   display: flex;
 }
 
-.time-container {
+#time-container {
   display: flex;
   justify-content: center;
   width: 50%;
@@ -52,7 +53,7 @@ img[class$="image"] {
   margin-bottom: 5%;
 }
 
-.article-container {
+#article-container {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -63,7 +64,7 @@ img[class$="image"] {
   padding: 5%;
 }
 
-.todo-container {
+#todo-container {
   width: 100%;
   display: flex;
   align-items: center;
@@ -76,7 +77,7 @@ article {
   flex-direction: column;
 }
 
-.todo-container * {
+#todo-container * {
   margin-bottom: 10px;
 }
 
@@ -158,4 +159,28 @@ div[class~="hidden"] {
 
 div[class$="day"] {
   transition: all 2s;
+}
+
+body[class="dark-mode"] {
+  background-color: black;
+}
+
+#article-container[class="dark-mode"] {
+  border-color: white;
+}
+
+#header-container[class="dark-mode"] {
+  border-color: white;
+}
+
+#time-container[class="dark-mode"] {
+  border-color: white;
+}
+
+#greeting[class="dark-mode"] {
+  color: white;
+}
+
+#time[class="dark-mode"] {
+  color: white;
 }
