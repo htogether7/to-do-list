@@ -6,6 +6,7 @@ const timeContainer = document.querySelector("#time-container");
 const greeting = document.querySelector("#greeting");
 const time = document.querySelector("#time");
 const modeImage = document.querySelector("#mode-image");
+const toDoList = document.querySelector(".todo-list");
 
 function handleClickModeButton(event) {
     console.log("clicked!");
@@ -20,6 +21,10 @@ function handleClickModeButton(event) {
         modeImage.setAttribute("src", "../img/moon.png");
     } else {
         modeImage.setAttribute("src", "../img/sun.png");
+    }
+    for (let x of toDoList.children) {
+        // x.classList.toggle("dark-mode");
+        x.children[0].classList.toggle("dark-mode");
     }
 }
 

@@ -1,7 +1,6 @@
 // const clock = document.querySelector("h2#clock");
 // const day = document.querySelector("h2#day");
 // let dayChangeCount = 0;
-const toDoList = document.querySelector(".todo-list");
 let timeText = timeContainer.children[0];
 
 function getClock() {

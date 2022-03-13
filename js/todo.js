@@ -138,7 +138,11 @@ function paintToDo(obj) {
     const timeSubmitButton = document.createElement("input");
 
     li.id = obj.id;
-    liContainer.classList.add("li-container");
+    // liContainer.classList.add("li-container");
+    liContainer.setAttribute("id","li-container");
+    if (body.classList.contains("dark-mode")) {
+        liContainer.classList.add("dark-mode");
+    }
     toDoText.classList.add("todo-text");
     liButtonContainer.classList.add("li-button-container");
     successButton.classList.add("success-button");
